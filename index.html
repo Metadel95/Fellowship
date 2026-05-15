@@ -910,6 +910,27 @@ const ABBR = { "Marriage": "M", "Pre-Marriage": "PM", "The Word": "TW", "Hot Tak
       vb.style.display = 'none';
     }
   }
+    function shareQuestion() {
+    const q = QUESTIONS[currentCat][currentIdx];
+    const text = q.verse ? `"${q.text}"\n\n${q.verse}` : `"${q.text}"`;
+    const shareBtn = document.getElementById('shareBtn');
+    const shareLabel = document.getElementById('shareLabel');
+    const shareIcon = document.getElementById('shareIcon');
+
+    const showCopied = () => {
+      shareBtn.classList.add('copied');
+      shareLabel.textContent = 'Copied!';
+      shareIcon.innerHTML = '<path d="M3 8L6.5 11.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+      setTimeout(() => {
+        shareBtn.classList.remove('copied');
+        shareLabel.textContent = 'Share';
+        shareIcon.innerHTML = '<path d="M11 1L15 5L11 9V7C7 7 4 8.5 3 12C3 8 5 4 11 4V1Z" fill="currentColor"/><path d="M2 9V14H12V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>';
+      }, 2000);
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(showCopied);
+    } else {
   
       // Fallback for older browsers
       const ta = document.createElement('textarea');
