@@ -3,379 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Discuss</title>
+  <title>Fellowship</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --gold: #c49950;
-      --gold-light: #d4b06a;
-      --bg: #0f0e0c;
-      --card-bg: #1c1a15;
-      --card-bg2: #161410;
-      --border: #2e2b22;
-      --border2: #3a3528;
-      --text-primary: #f4ede0;
-      --text-muted: #7a7060;
-      --text-dim: #9a8f7a;
-      --text-footer: #4a4538;
-      --verse-bg: #1a1810;
-      --green: #7ecf8e;
+      --gold: #c49950; --gold-light: #d4b06a; --bg: #0f0e0c;
+      --card-bg: #1c1a15; --card-bg2: #161410; --border: #2e2b22;
+      --border2: #3a3528; --text-primary: #f4ede0; --text-muted: #7a7060;
+      --text-dim: #9a8f7a; --text-footer: #4a4538; --verse-bg: #1a1810;
     }
-
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      font-family: 'EB Garamond', 'Georgia', serif;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 48px 20px 64px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Atmospheric glow */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -15vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 70vw;
-      height: 45vh;
-      background: radial-gradient(ellipse, rgba(196,153,80,0.13) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .wrap {
-      width: 100%;
-      max-width: 520px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── HEADER ── */
-    header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      color: var(--gold);
-    }
-
-    .eyebrow-text {
-      font-size: 10px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    .cross {
-      display: inline-flex;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(34px, 9vw, 52px);
-      font-weight: 400;
-      color: var(--text-primary);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-
-    h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .subtitle {
-      margin-top: 12px;
-      font-size: 14px;
-      color: var(--text-muted);
-      font-style: italic;
-      line-height: 1.6;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .divider-line {
-      flex: 1;
-      height: 1px;
-    }
-
-    .divider-line.l { background: linear-gradient(to right, transparent, var(--border2)); }
-    .divider-line.r { background: linear-gradient(to left, transparent, var(--border2)); }
-
-    .divider-diamond {
-      width: 5px;
-      height: 5px;
-      background: var(--gold);
-      transform: rotate(45deg);
-      flex-shrink: 0;
-    }
-
-    /* ── DROPDOWN ── */
-    .dropdown-wrap {
-      position: relative;
-      margin-bottom: 24px;
-    }
-
-    .dropdown-btn {
-      width: 100%;
-      padding: 13px 18px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: border-color 0.2s;
-      font-family: 'EB Garamond', serif;
-    }
-
-    .dropdown-btn:hover { border-color: var(--gold); }
-    .dropdown-btn.open  { border-color: var(--gold); }
-
-    .dropdown-btn-label {
-      font-size: 12px;
-      color: var(--gold);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .dropdown-arrow {
-      font-size: 10px;
-      color: var(--text-muted);
-      display: inline-block;
-      transition: transform 0.25s;
-    }
-
-    .dropdown-arrow.open { transform: rotate(180deg); }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 5px);
-      left: 0; right: 0;
-      background: var(--verse-bg);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      overflow: hidden;
-      z-index: 20;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.65);
-    }
-
-    .dropdown-menu.open { display: block; }
-
-    .dropdown-item {
-      width: 100%;
-      padding: 12px 18px;
-      text-align: left;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(58,53,40,0.5);
-      color: var(--text-dim);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-family: 'EB Garamond', serif;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .dropdown-item:last-child { border-bottom: none; }
-    .dropdown-item:hover { background: rgba(196,153,80,0.06); color: var(--gold-light); }
-    .dropdown-item.active { background: rgba(196,153,80,0.1); color: var(--gold); }
-
-    /* ── CARD ── */
-    .stage {
-      position: relative;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .stage.fade-out {
-      opacity: 0;
-      transform: translateY(10px) scale(0.98);
-    }
-
-    .card-badge {
-      position: absolute;
-      top: -11px;
-      right: 18px;
-      background: var(--gold);
-      color: var(--bg);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 2px;
-      font-family: 'EB Garamond', serif;
-      font-weight: 600;
-      z-index: 2;
-    }
-
-    .card {
-      background: linear-gradient(145deg, var(--card-bg) 0%, var(--card-bg2) 100%);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 34px 26px 26px;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Corner accent triangle */
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 0; height: 0;
-      border-left: 38px solid rgba(196,153,80,0.22);
-      border-bottom: 38px solid transparent;
-    }
-
-    .question-text {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(17px, 4vw, 22px);
-      color: var(--text-primary);
-      line-height: 1.68;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-
-    /* ── VERSE ── */
-    .verse-block {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
-
-    .verse-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      color: var(--gold);
-    }
-
-    .verse-label-text {
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .verse-text {
-      font-size: 13px;
-      color: var(--text-dim);
-      font-style: italic;
-      line-height: 1.65;
-      letter-spacing: 0.01em;
-    }
-
-    /* ── ACTIONS ── */
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 26px;
-    }
-
-    .btn-next {
-      flex: 1;
-      padding: 14px 20px;
-      background: var(--gold);
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      color: var(--bg);
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-family: 'EB Garamond', serif;
-      font-weight: 700;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .btn-next:hover  { background: var(--gold-light); transform: translateY(-1px); }
-    .btn-next:active { transform: translateY(1px); }
-
-    /* ── FOOTER ── */
-    footer {
-      margin-top: 44px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .footer-cross-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-footer);
-    }
-
-    .footer-line {
-      width: 30px;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .footer-text {
-      font-size: 10px;
-      color: var(--text-footer);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 400px) {
-      body { padding: 36px 14px 52px; }
-      .card { padding: 28px 18px 20px; }
-      .actions { flex-direction: column; }
-      .btn-share { justify-content: center; }
-    }
+    html, body { min-height: 100%; background: var(--bg); font-family: 'EB Garamond','Georgia',serif; }
+    body { display:flex; flex-direction:column; align-items:center; padding:48px 20px 64px; position:relative; overflow-x:hidden; }
+    body::before { content:''; position:fixed; top:-15vh; left:50%; transform:translateX(-50%); width:70vw; height:45vh; background:radial-gradient(ellipse,rgba(196,153,80,0.13) 0%,transparent 70%); pointer-events:none; z-index:0; }
+    .wrap { width:100%; max-width:520px; position:relative; z-index:1; }
+    header { text-align:center; margin-bottom:32px; }
+    .eyebrow { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:16px; color:var(--gold); }
+    .eyebrow-text { font-size:10px; letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); }
+    .cross { display:inline-flex; }
+    h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(34px,9vw,52px); font-weight:400; color:var(--text-primary); line-height:1.1; letter-spacing:-0.02em; }
+    h1 em { font-style:italic; color:var(--gold); }
+    .subtitle { margin-top:12px; font-size:14px; color:var(--text-muted); font-style:italic; line-height:1.6; }
+    .divider { display:flex; align-items:center; gap:12px; margin-top:24px; }
+    .divider-line { flex:1; height:1px; }
+    .divider-line.l { background:linear-gradient(to right,transparent,var(--border2)); }
+    .divider-line.r { background:linear-gradient(to left,transparent,var(--border2)); }
+    .divider-diamond { width:5px; height:5px; background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
+    .screen { display:none; }
+    .screen.active { display:block; }
+    /* SETUP */
+    .setup-card { background:linear-gradient(145deg,var(--card-bg) 0%,var(--card-bg2) 100%); border:1px solid var(--border); border-radius:8px; padding:30px 26px; box-shadow:0 4px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03); position:relative; overflow:hidden; }
+    .setup-card::before { content:''; position:absolute; top:0; left:0; width:0; height:0; border-left:38px solid rgba(196,153,80,0.22); border-bottom:38px solid transparent; }
+    .setup-label { font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
+    .count-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+    .count-btn { flex:1; min-width:36px; padding:10px 6px; background:rgba(255,255,255,0.03); border:1px solid var(--border2); border-radius:4px; cursor:pointer; color:var(--text-dim); font-size:15px; font-family:'Playfair Display',serif; transition:all 0.2s; text-align:center; }
+    .count-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .count-btn.selected { background:rgba(196,153,80,0.12); border-color:var(--gold); color:var(--gold); }
+    .name-inputs { display:flex; flex-direction:column; gap:10px; margin-bottom:26px; }
+    .name-row { display:flex; align-items:center; gap:10px; }
+    .name-number { font-size:11px; color:var(--gold); letter-spacing:0.1em; min-width:22px; text-align:right; flex-shrink:0; font-family:'EB Garamond',serif; }
+    .name-input { flex:1; padding:10px 14px; background:rgba(255,255,255,0.03); border:1px solid var(--border2); border-radius:4px; color:var(--text-primary); font-size:14px; font-family:'EB Garamond',serif; outline:none; transition:border-color 0.2s; }
+    .name-input::placeholder { color:var(--text-muted); }
+    .name-input:focus { border-color:var(--gold); }
+    .btn-start { width:100%; padding:14px 20px; background:var(--gold); border:none; border-radius:4px; cursor:pointer; color:var(--bg); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-family:'EB Garamond',serif; font-weight:700; transition:background 0.2s,transform 0.15s; }
+    .btn-start:hover { background:var(--gold-light); transform:translateY(-1px); }
+    .btn-start:active { transform:translateY(1px); }
+    .btn-start:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+    /* GAME */
+    .dropdown-wrap { position:relative; margin-bottom:24px; }
+    .dropdown-btn { width:100%; padding:13px 18px; background:rgba(255,255,255,0.03); border:1px solid var(--border2); border-radius:4px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s; font-family:'EB Garamond',serif; }
+    .dropdown-btn:hover,.dropdown-btn.open { border-color:var(--gold); }
+    .dropdown-btn-label { font-size:12px; color:var(--gold); letter-spacing:0.16em; text-transform:uppercase; }
+    .dropdown-arrow { font-size:10px; color:var(--text-muted); display:inline-block; transition:transform 0.25s; }
+    .dropdown-arrow.open { transform:rotate(180deg); }
+    .dropdown-menu { display:none; position:absolute; top:calc(100% + 5px); left:0; right:0; background:var(--verse-bg); border:1px solid var(--border2); border-radius:4px; overflow:hidden; z-index:20; box-shadow:0 20px 60px rgba(0,0,0,0.65); }
+    .dropdown-menu.open { display:block; }
+    .dropdown-item { width:100%; padding:12px 18px; text-align:left; background:transparent; border:none; border-bottom:1px solid rgba(58,53,40,0.5); color:var(--text-dim); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; font-family:'EB Garamond',serif; cursor:pointer; transition:background 0.15s,color 0.15s; }
+    .dropdown-item:last-child { border-bottom:none; }
+    .dropdown-item:hover { background:rgba(196,153,80,0.06); color:var(--gold-light); }
+    .dropdown-item.active { background:rgba(196,153,80,0.1); color:var(--gold); }
+    .stage { position:relative; transition:opacity 0.3s ease,transform 0.3s ease; }
+    .stage.fade-out { opacity:0; transform:translateY(10px) scale(0.98); }
+    .card-badge { position:absolute; top:-11px; right:18px; background:var(--gold); color:var(--bg); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; padding:3px 10px; border-radius:2px; font-family:'EB Garamond',serif; font-weight:600; z-index:2; }
+    .card { background:linear-gradient(145deg,var(--card-bg) 0%,var(--card-bg2) 100%); border:1px solid var(--border); border-radius:8px; padding:34px 26px 26px; box-shadow:0 4px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.03); position:relative; overflow:hidden; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:0; height:0; border-left:38px solid rgba(196,153,80,0.22); border-bottom:38px solid transparent; }
+    .player-spotlight { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+    .player-avatar { width:40px; height:40px; border-radius:50%; background:rgba(196,153,80,0.12); border:1px solid var(--gold); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; color:var(--gold); flex-shrink:0; }
+    .player-info { flex:1; }
+    .player-label { font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:3px; }
+    .player-name { font-family:'Playfair Display',serif; font-size:20px; color:var(--text-primary); font-weight:400; }
+    .question-text { font-family:'Playfair Display',Georgia,serif; font-size:clamp(17px,4vw,22px); color:var(--text-primary); line-height:1.68; font-weight:400; letter-spacing:0.01em; }
+    .verse-block { margin-top:22px; padding-top:18px; border-top:1px solid var(--border); }
+    .verse-label { display:flex; align-items:center; gap:6px; margin-bottom:8px; color:var(--gold); }
+    .verse-label-text { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; }
+    .verse-text { font-size:13px; color:var(--text-dim); font-style:italic; line-height:1.65; letter-spacing:0.01em; }
+    .actions { display:flex; gap:10px; margin-top:26px; }
+    .btn-next { flex:1; padding:14px 20px; background:var(--gold); border:none; border-radius:4px; cursor:pointer; color:var(--bg); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-family:'EB Garamond',serif; font-weight:700; transition:background 0.2s,transform 0.15s; }
+    .btn-next:hover { background:var(--gold-light); transform:translateY(-1px); }
+    .btn-next:active { transform:translateY(1px); }
+    .btn-reset { padding:14px 15px; border-radius:4px; background:rgba(196,153,80,0.07); border:1px solid var(--border2); cursor:pointer; color:var(--text-dim); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; font-family:'EB Garamond',serif; transition:border-color 0.2s,color 0.2s; white-space:nowrap; }
+    .btn-reset:hover { border-color:var(--gold); color:var(--gold); }
+    .player-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+    .player-pill { padding:5px 12px; border-radius:20px; border:1px solid var(--border2); font-size:11px; color:var(--text-dim); font-family:'EB Garamond',serif; letter-spacing:0.05em; transition:all 0.3s; }
+    .player-pill.current { background:rgba(196,153,80,0.12); border-color:var(--gold); color:var(--gold); }
+    footer { margin-top:44px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .footer-cross-row { display:flex; align-items:center; gap:10px; color:var(--text-footer); }
+    .footer-line { width:30px; height:1px; background:var(--border); }
+    .footer-text { font-size:10px; color:var(--text-footer); letter-spacing:0.16em; text-transform:uppercase; }
+    @media (max-width:400px) { body{padding:36px 14px 52px;} .card{padding:28px 18px 20px;} .setup-card{padding:24px 16px;} }
   </style>
 </head>
 <body>
-
 <div class="wrap">
 
-  <!-- HEADER -->
   <header>
     <div class="eyebrow">
-      <span class="cross">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/>
-          <rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/>
-        </svg>
-      </span>
-      <span class="eyebrow-text">Discuss</span>
-      <span class="cross">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/>
-          <rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/>
-        </svg>
-      </span>
+      <span class="cross"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/></svg></span>
+      <span class="eyebrow-text">Fellowship</span>
+      <span class="cross"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/><rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/></svg></span>
     </div>
     <h1>Start the<br><em>Conversation</em></h1>
     <p class="subtitle">deeper connection &amp; honest dialogue</p>
@@ -386,538 +112,257 @@
     </div>
   </header>
 
-  <!-- DROPDOWN -->
-  <div class="dropdown-wrap" id="dropdownWrap">
-    <button class="dropdown-btn" id="dropdownBtn" onclick="toggleDropdown()">
-      <span class="dropdown-btn-label" id="catLabel">Ice Breakers</span>
-      <span class="dropdown-arrow" id="dropdownArrow">▼</span>
-    </button>
-    <div class="dropdown-menu" id="dropdownMenu"></div>
+  <!-- SETUP SCREEN -->
+  <div class="screen active" id="screenSetup">
+    <div class="setup-card">
+      <span class="setup-label">How many players?</span>
+      <div class="count-row" id="countRow"></div>
+      <span class="setup-label">Enter player names</span>
+      <div class="name-inputs" id="nameInputs"></div>
+      <button class="btn-start" id="btnStart" onclick="startGame()" disabled>Start Fellowship</button>
+    </div>
   </div>
 
-  <!-- CARD STAGE -->
-  <div class="stage" id="stage">
-    <div class="card-badge" id="cardBadge">IB · 01</div>
-    <div class="card">
-      <p class="question-text" id="questionText">Loading...</p>
-
-      <div class="verse-block" id="verseBlock" style="display:none">
-        <div class="verse-label">
-          <span class="cross" style="color: var(--gold);">
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-              <rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/>
-              <rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/>
-            </svg>
-          </span>
-          <span class="verse-label-text">Scripture</span>
+  <!-- GAME SCREEN -->
+  <div class="screen" id="screenGame">
+    <div class="player-pills" id="playerPills"></div>
+    <div class="dropdown-wrap" id="dropdownWrap">
+      <button class="dropdown-btn" id="dropdownBtn" onclick="toggleDropdown()">
+        <span class="dropdown-btn-label" id="catLabel">Ice Breakers</span>
+        <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+      </button>
+      <div class="dropdown-menu" id="dropdownMenu"></div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="card-badge" id="cardBadge">IB · 01</div>
+      <div class="card">
+        <div class="player-spotlight">
+          <div class="player-avatar" id="playerAvatar">?</div>
+          <div class="player-info">
+            <span class="player-label">answering this question</span>
+            <span class="player-name" id="playerNameDisplay">—</span>
+          </div>
         </div>
-        <p class="verse-text" id="verseText"></p>
-      </div>
-
-      <div class="actions">
-        <button class="btn-next" onclick="nextQuestion()">Next Question</button>
+        <p class="question-text" id="questionText">Loading...</p>
+        <div class="verse-block" id="verseBlock" style="display:none">
+          <div class="verse-label">
+            <span class="cross" style="color:var(--gold)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/><rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/></svg></span>
+            <span class="verse-label-text">Scripture</span>
+          </div>
+          <p class="verse-text" id="verseText"></p>
+        </div>
+        <div class="actions">
+          <button class="btn-next" onclick="nextQuestion()">Next Question</button>
+          <button class="btn-reset" onclick="resetGame()">← Players</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-cross-row">
       <div class="footer-line"></div>
-      <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-        <rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/>
-        <rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/>
-      </svg>
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/><rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/></svg>
       <div class="footer-line"></div>
     </div>
-    <p class="footer-text">Discuss &nbsp;·&nbsp; 2025</p>
+    <p class="footer-text">Fellowship &nbsp;·&nbsp; 2025</p>
   </footer>
-
-</div><!-- /.wrap -->
+</div>
 
 <script>
   const QUESTIONS = {
-  "Pre-Marriage": [
-    { text: "What's a non-negotiable value you need your future spouse to share with you?", verse: null },
-    { text: "How do you currently handle conflict with someone you're close to — and how do you want to grow in that?", verse: "Do not let the sun go down while you are still angry. — Ephesians 4:26" },
-    { text: "What does a Christ-centered marriage look like to you, practically speaking?", verse: null },
-    { text: "How are you actively preparing yourself spiritually to be a godly spouse?", verse: "He who finds a wife finds what is good and receives favor from the Lord. — Proverbs 18:22" },
-    { text: "What's one expectation you have about marriage that you've never actually said out loud?", verse: null },
-    { text: "How do you define emotional intimacy, and how do you nurture it outside of romantic relationships right now?", verse: null },
-    { text: "What does it mean to you for a man to 'lead' in a marriage — and do you agree with that framework?", verse: "Husbands, love your wives, just as Christ loved the church. — Ephesians 5:25" },
-    { text: "What childhood example of marriage — good or bad — shaped your expectations the most?", verse: null },
-    { text: "How do you handle finances personally, and how do you envision doing that with a spouse?", verse: null },
-    { text: "What does submission look like in a godly marriage — and how do you feel about it?", verse: "Submit to one another out of reverence for Christ. — Ephesians 5:21" },
-    { text: "Are you in a season of preparation for marriage — or are you just waiting for it to happen? What's the difference?", verse: null },
-    { text: "How do you think about physical boundaries in a dating relationship, and what's your standard?", verse: "Flee from sexual immorality. — 1 Corinthians 6:18" },
-    { text: "What habits or patterns in your life right now would be hard to change once married?", verse: null },
-    { text: "How important is it to you that your future spouse shares your exact faith tradition or denomination?", verse: null },
-    { text: "What does it look like to be 'equally yoked' — and how seriously do you apply that standard?", verse: "Do not be unequally yoked with unbelievers. — 2 Corinthians 6:14" },
-    { text: "What role do you want in-laws to play in your future marriage — and how do you plan to set those boundaries?", verse: null },
-    { text: "Do you think premarital counseling is necessary, optional, or overrated?", verse: null },
-    { text: "How do you currently practice sacrificial love in everyday life — outside of romance?", verse: "Greater love has no one than this: to lay down one's life for one's friends. — John 15:13" },
-    { text: "What do you think you bring to a marriage — and what do you know you still need to work on?", verse: null },
-    { text: "How do you feel about discussing past relationships or mistakes with a future spouse?", verse: null },
-    { text: "What's your vision for how faith will be practiced day-to-day in your future home?", verse: "As for me and my household, we will serve the Lord. — Joshua 24:15" },
-    { text: "Do you think loneliness is a valid reason to rush into marriage — and have you ever felt that pressure?", verse: null },
-    { text: "What's a fear about marriage that you rarely admit to anyone?", verse: null },
-    { text: "How do you plan to keep friendship at the center of a romantic relationship?", verse: null },
-    { text: "If your future marriage looked exactly like the marriages around you, would that be enough for you?", verse: null },
-    { text: "How do you currently handle sexual temptation — and how honest are you about that struggle?", verse: "Create in me a clean heart, O God. — Psalm 51:10" },
-    { text: "What does it look like to pursue someone with intention and honesty rather than ambiguity?", verse: null },
-    { text: "How do you think about having children — and what happens if you and a future spouse disagree?", verse: null },
-    { text: "What role does prayer play in your current relationships — and how do you want it to function in marriage?", verse: null },
-    { text: "Do you think it's possible to be 'too spiritually mature' for your current dating pool?", verse: null },
-    { text: "What would it look like to be fully content as a single person — and are you there yet?", verse: "I have learned, in whatever state I am, to be content. — Philippians 4:11" },
-    { text: "What's one thing you've observed in a healthy marriage that you want to replicate?", verse: null },
-    { text: "How do you believe God views singleness — as a gift, a season, or a problem to solve?", verse: "It is good for a man not to marry… each has their own gift from God. — 1 Corinthians 7:1,7" },
-    { text: "What's your approach to accountability in a dating relationship?", verse: null },
-    { text: "How do you think about the role of sex in a marriage — as a duty, a gift, or something else?", verse: "The husband should fulfill his marital duty to his wife. — 1 Corinthians 7:3" },
-    { text: "How do you define forgiveness in a marriage — and do you think it means forgetting too?", verse: null },
-    { text: "What would a disagreement about spiritual leadership in a marriage look like — and how would you handle it?", verse: null },
-    { text: "Do you think people change significantly after marriage — and does that scare or excite you?", verse: null },
-    { text: "How do you think about pursuing emotional healing before entering a serious relationship?", verse: null },
-    { text: "What's one thing you've prayed specifically about regarding your future spouse or marriage?", verse: null },
-    { text: "How do you handle watching peers get married while you're still single?", verse: null },
-    { text: "What does 'guard your heart' actually mean to you in dating — and how do you live it out?", verse: "Guard your heart, for everything you do flows from it. — Proverbs 4:23" },
-    { text: "Is it possible to truly love someone you've never disagreed with? What do you think conflict reveals?", verse: null },
-    { text: "What do you think is the most underrated quality to look for in a future spouse?", verse: null },
-    { text: "How do you think marriage changes your relationship with God — positively and negatively?", verse: null },
-    { text: "What's a cultural expectation about marriage you've had to unlearn or challenge?", verse: null },
-    { text: "How do you talk to God about your desires for marriage — and does it feel natural or awkward?", verse: "Delight yourself in the Lord, and he will give you the desires of your heart. — Psalm 37:4" },
-    { text: "Do you think God has 'one person' for everyone — or is that a myth?", verse: null },
-    { text: "What's the difference between being ready for marriage and being desperate for it?", verse: null },
-    { text: "How do you currently invest in the community and friendships that will sustain you in marriage?", verse: null },
-    { text: "What's a story from your parents' marriage — or someone else's — that has taught you what NOT to do?", verse: null },
-    { text: "What would you do if the person you wanted to marry had a completely different calling or life direction?", verse: null },
-    { text: "How do you define 'readiness' for marriage — and who decides when you've reached it?", verse: null },
-    { text: "What's a sin pattern you know you need to overcome before you're fit to commit to someone else?", verse: null },
-    { text: "How do you feel about seeking premarital guidance from older, married mentors?", verse: null },
-    { text: "What's one thing you've never told a dating partner but should have?", verse: null },
-    { text: "How much does a person's social media presence influence how you see their character?", verse: null },
-    { text: "What's the line between standards and idealism in choosing a spouse?", verse: null },
-    { text: "How do you think about mental health — your own and a future spouse's — in the context of marriage?", verse: null },
-    { text: "What does it mean to choose someone every single day — and can you do that with your current character?", verse: null },
-    { text: "What role does attraction play in choosing a spouse — and where does it rank among your priorities?", verse: null },
-    { text: "What's a question you've always wanted to ask someone who's been married 20+ years?", verse: null },
-    { text: "Do you think God honors the desires of your heart regarding marriage even when His timing differs?", verse: "Trust in the Lord with all your heart and lean not on your own understanding. — Proverbs 3:5" },
-    { text: "How do you handle the gap between what you want in a spouse and what you actually attract?", verse: null },
-    { text: "Do you think people settle in marriage — and how would you know if you were doing it?", verse: null },
-    { text: "What does a 'covenant' mindset in marriage look like versus a 'contract' mindset?", verse: null },
-    { text: "How do you plan to prioritize your spouse over your friendships after marriage?", verse: null },
-    { text: "What's a sacrifice you've already made — or would need to make — to pursue the right person?", verse: null },
-    { text: "How do you feel about marrying someone from a different cultural background or ethnicity?", verse: null },
-    { text: "What does spiritual compatibility actually look like in day-to-day life — not just on Sundays?", verse: null },
-    { text: "What does forgiveness of a future spouse's past look like before you even know what that past is?", verse: null },
-    { text: "How do you think about the idea that marriage is a tool for sanctification, not primarily happiness?", verse: null },
-    { text: "What's one way you've grown as a person in the last year that makes you more ready for marriage?", verse: null },
-    { text: "How do you handle it when someone you're interested in doesn't share your level of spiritual commitment?", verse: null },
-    { text: "What's a question you ask yourself to check your motives when you're interested in someone?", verse: null },
-    { text: "What's the most important conversation a couple can have before marriage?", verse: null },
-    { text: "Do you believe in long-distance relationships — and what would make one worth it?", verse: null },
-    { text: "How do you feel about marrying someone who has been married before?", verse: null },
-    { text: "What does it mean to love someone 'on purpose' — and have you ever done that for someone who was hard to love?", verse: null },
-    { text: "What's the most honest thing you can say about your emotional maturity right now?", verse: null },
-    { text: "Do you think praying together regularly is a reliable sign of a healthy relationship?", verse: null },
-    { text: "What does it look like to pursue marriage with urgency but without anxiety?", verse: null },
-    { text: "What part of your personality are you worried a future spouse won't be able to handle?", verse: null },
-    { text: "How do you think about waiting on God in singleness without being passive?", verse: null },
-    { text: "What's the hardest part of dating with integrity in today's culture?", verse: null },
-    { text: "How would you handle it if a mentor or trusted person in your life disapproved of who you wanted to marry?", verse: null },
-    { text: "What's one lie about love you absorbed from culture that you've had to unlearn?", verse: null },
-    { text: "What role should community play in confirming or challenging a marriage decision?", verse: null },
-    { text: "How do you want to be pursued — or how do you want to pursue someone?", verse: null },
-    { text: "What does the phrase 'loving someone unconditionally' actually mean to you?", verse: "Love is patient, love is kind… it keeps no record of wrongs. — 1 Corinthians 13:4–5" },
-    { text: "Is there anything in your past you believe would disqualify you from a godly marriage?", verse: "There is therefore now no condemnation for those who are in Christ Jesus. — Romans 8:1" },
-    { text: "What's a practical way you're cultivating your character so you become the right person, not just find the right person?", verse: null },
-    { text: "How do you plan to keep God at the center of a romantic relationship rather than letting the relationship replace God?", verse: null },
-    { text: "What's a red flag that most people in your circle ignore — but you take seriously?", verse: null },
-    { text: "What does it mean to honor God with your body in a dating context — and how are you doing on that?", verse: "Do you not know that your bodies are temples of the Holy Spirit? — 1 Corinthians 6:19" },
-    { text: "What's the most important lesson about marriage you've learned from someone else's divorce?", verse: null },
-    { text: "How do you define 'love' — and has your definition changed over the years?", verse: null },
-  ],
-  "The Word": [
-    { text: "Which Bible passage has shaped your life more than any other, and why?", verse: "Your word is a lamp to my feet and a light to my path. — Psalm 119:105" },
-    { text: "How has your understanding of a familiar Scripture changed as you've grown in faith?", verse: null },
-    { text: "When you read the Bible, what's your biggest struggle — and what helps you stay consistent?", verse: "All Scripture is God-breathed and useful for teaching, rebuking, correcting and training in righteousness. — 2 Timothy 3:16" },
-    { text: "What's a verse you've memorized that you return to in moments of pressure or fear?", verse: null },
-    { text: "If you could share one chapter of the Bible with someone who had never read it, which would you choose and why?", verse: null },
-    { text: "What book of the Bible do you find most difficult to understand — and have you ever wrestled with it seriously?", verse: null },
-    { text: "Has a Bible verse ever convicted you of something you didn't want to change? What happened?", verse: null },
-    { text: "Do you approach Bible reading as a discipline, a delight, or both — and what's made the difference?", verse: "Oh, how I love your law! I meditate on it all day long. — Psalm 119:97" },
-    { text: "What's a passage that confused or even bothered you — and how did you work through it?", verse: null },
-    { text: "How do you handle Bible passages that seem to contradict each other?", verse: null },
-    { text: "What Old Testament story has impacted your New Testament faith in an unexpected way?", verse: null },
-    { text: "Has Scripture ever spoken so directly to your situation that it felt personal? What was the passage?", verse: "For the word of God is alive and active, sharper than any double-edged sword. — Hebrews 4:12" },
-    { text: "What does it mean to 'meditate' on Scripture — and how do you actually do that?", verse: "Keep this Book of the Law always on your lips; meditate on it day and night. — Joshua 1:8" },
-    { text: "Do you think it's possible to know the Bible well but not really know God — and how do you guard against that?", verse: null },
-    { text: "What's a parable of Jesus that you return to often — and what does it keep teaching you?", verse: null },
-    { text: "What does it look like to interpret Scripture in community rather than only privately?", verse: null },
-    { text: "How do you handle a Bible command that feels impossible or too demanding in today's world?", verse: null },
-    { text: "What's a Scripture promise you've had to hold onto through a long, difficult season?", verse: "His divine power has given us everything we need for a godly life. — 2 Peter 1:3" },
-    { text: "How has learning the historical and cultural context of the Bible changed the way you read it?", verse: null },
-    { text: "Have you ever read a passage so many times it lost meaning — and how did you rediscover it?", verse: null },
-    { text: "What's a Scripture that has shaped how you see money, work, or ambition?", verse: "But seek first his kingdom and his righteousness, and all these things will be given to you as well. — Matthew 6:33" },
-    { text: "Do you think Christians can take Bible verses too out of context — and can you give an example?", verse: null },
-    { text: "What's a book of the Bible you've avoided reading — and why?", verse: null },
-    { text: "How do you approach a passage that seems to endorse something that feels morally wrong to modern readers?", verse: null },
-    { text: "What does the Sermon on the Mount mean for how you live day to day — not just what you believe?", verse: "Blessed are the pure in heart, for they will see God. — Matthew 5:8" },
-    { text: "How do you use Scripture in prayer — do you pray it back to God, or keep reading and praying separate?", verse: null },
-    { text: "What's a verse that has changed a specific relationship in your life?", verse: null },
-    { text: "What role does the Holy Spirit play in your personal Bible reading?", verse: "The Spirit will teach you all things. — John 14:26" },
-    { text: "Have you ever felt God speak to you through Scripture during a moment of deep doubt? What happened?", verse: null },
-    { text: "What's a lesser-known Bible character whose story has stayed with you — and why?", verse: null },
-    { text: "How do you balance reading the whole Bible versus going deep in one section?", verse: null },
-    { text: "Do you think the Psalms give permission to be honest with God about negative emotions? How has that helped you?", verse: "How long, Lord? Will you forget me forever? — Psalm 13:1" },
-    { text: "What does it look like to let Scripture shape your worldview rather than just confirm your existing one?", verse: null },
-    { text: "Have you ever made a major life decision based primarily on a Scripture passage? What was it?", verse: null },
-    { text: "What's a passage about identity that you return to when you struggle with who you are?", verse: "I praise you because I am fearfully and wonderfully made. — Psalm 139:14" },
-    { text: "What's the hardest command in the Bible for you to obey — and why?", verse: "Love your enemies and pray for those who persecute you. — Matthew 5:44" },
-    { text: "What does it look like to 'hide God's word in your heart' practically in your current life stage?", verse: "I have hidden your word in my heart that I might not sin against you. — Psalm 119:11" },
-    { text: "How do you distinguish between what Scripture says and what tradition or culture has added to it?", verse: null },
-    { text: "What's a passage from the prophets that feels surprisingly relevant to life today?", verse: null },
-    { text: "How has the book of Job affected how you think about suffering, fairness, and God's silence?", verse: null },
-    { text: "What's a New Testament letter that has changed how you think about church or community?", verse: null },
-    { text: "How do you approach Bible reading plans — helpful structure or too rigid?", verse: null },
-    { text: "What passage helps you most when you feel forgotten, overlooked, or unseen?", verse: "Can a mother forget the baby at her breast? … I will not forget you. — Isaiah 49:15" },
-    { text: "Have you ever studied the Bible in a language other than your native one — and what did that reveal?", verse: null },
-    { text: "What's a passage about grace that you find uncomfortably generous?", verse: "Where sin increased, grace increased all the more. — Romans 5:20" },
-    { text: "How do you respond when someone uses a Bible verse to justify something that feels wrong?", verse: null },
-    { text: "What's a theme you've traced across the whole Bible — from Genesis to Revelation?", verse: null },
-    { text: "What passage has helped you most in understanding who Jesus really is — not just what he did?", verse: "In the beginning was the Word, and the Word was with God, and the Word was God. — John 1:1" },
-    { text: "How do you handle the gap between knowing a biblical truth and actually feeling it?", verse: null },
-    { text: "What's a passage that radically changed your understanding of God's character?", verse: null },
-    { text: "How does reading the Gospels in sequence feel different from reading them in isolated verses?", verse: null },
-    { text: "What's a verse from Proverbs that applies to a tension you're currently navigating?", verse: null },
-    { text: "How do you keep Bible study from becoming purely academic or informational rather than transformational?", verse: "Do not merely listen to the word, and so deceive yourselves. Do what it says. — James 1:22" },
-    { text: "What passage has helped you think about race, justice, or equality from a biblical lens?", verse: "There is neither Jew nor Gentile… for you are all one in Christ Jesus. — Galatians 3:28" },
-    { text: "What does 'the fear of the Lord' actually mean — and how do you hold it together with God's love?", verse: "The fear of the Lord is the beginning of wisdom. — Proverbs 9:10" },
-    { text: "Have you ever found a verse you had completely misunderstood for years — and what corrected you?", verse: null },
-    { text: "What's a passage about the future that gives you peace about what's happening in the world right now?", verse: "He who was seated on the throne said, 'I am making everything new!' — Revelation 21:5" },
-    { text: "How do you keep reading the Bible when it feels dry or irrelevant in a particular season?", verse: null },
-    { text: "What's one word study you've done on a biblical concept that transformed how you understood it?", verse: null },
-    { text: "How has studying the life of Paul changed how you think about calling, suffering, or purpose?", verse: null },
-    { text: "What's a passage about rest, margin, or Sabbath that you need to sit with more seriously?", verse: "Come to me, all you who are weary and burdened, and I will give you rest. — Matthew 11:28" },
-    { text: "Do you think most Christians read the Bible enough to be changed by it — or just enough to feel religious?", verse: null },
-    { text: "What passage has shaped how you think about your body, health, or physical life?", verse: null },
-    { text: "How do you think about the differences between the God of the Old Testament and Jesus in the New Testament — or do you think there's a tension there?", verse: null },
-    { text: "What's a verse that has spoken to your calling, vocation, or sense of purpose?", verse: "For we are God's handiwork, created in Christ Jesus to do good works. — Ephesians 2:10" },
-    { text: "What's a passage you've shared with a non-Christian that created a real conversation?", verse: null },
-    { text: "How does reading the Bible devotionally differ from studying it theologically — and which do you do more?", verse: null },
-    { text: "What book of the Bible would you recommend for someone going through loss or grief?", verse: null },
-    { text: "What passage has corrected a misconception you had about prayer?", verse: null },
-    { text: "Do you think Christians should read the whole Bible — or is it okay to have parts you never engage?", verse: null },
-    { text: "What's a verse that has helped you in a season of spiritual drought?", verse: "Even though I walk through the darkest valley, I will fear no evil. — Psalm 23:4" },
-    { text: "How do you feel about Christians who say they prefer a 'red letter' approach — only focusing on Jesus's words?", verse: null },
-    { text: "What's a Scripture that has helped you navigate a specific ethical or moral decision?", verse: null },
-    { text: "How do you approach the book of Revelation — literally, symbolically, or something in between?", verse: null },
-    { text: "What's a passage about community or the church that you feel the modern church ignores or underapplies?", verse: "Carry each other's burdens, and in this way you will fulfill the law of Christ. — Galatians 6:2" },
-    { text: "What verse have you seen misused the most — and what does it actually mean in context?", verse: null },
-    { text: "What passage speaks most clearly to how you should handle money or generosity?", verse: "Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion. — 2 Corinthians 9:7" },
-    { text: "What's a passage about forgiveness that you've struggled to apply — and how are you doing on it now?", verse: null },
-    { text: "How has the Bible shaped your understanding of justice — and do you think the church lives that out?", verse: "Learn to do right; seek justice. — Isaiah 1:17" },
-    { text: "What's a passage from the Epistles that has most shaped how you think about Christian community?", verse: null },
-    { text: "What's one passage you'd use to explain the gospel to someone in under two minutes?", verse: "For God so loved the world that he gave his one and only Son. — John 3:16" },
-    { text: "What does 'abiding in the vine' look like in your real, everyday life — not just spiritually?", verse: "Remain in me, as I also remain in you. — John 15:4" },
-    { text: "Has a Bible passage ever held you accountable for something you were trying to justify?", verse: null },
-    { text: "What's a passage about leadership, authority, or power that has shaped how you lead or follow?", verse: null },
-    { text: "What's the most underrated book of the Bible that people don't read enough?", verse: null },
-    { text: "How do you apply the Bible to situations it doesn't directly address — like social media, AI, or modern ethics?", verse: null },
-    { text: "What's one thing about God's character that Scripture emphasizes that you think gets overlooked?", verse: null },
-    { text: "What passage has most changed how you treat strangers, outsiders, or those who are different from you?", verse: "Love your neighbor as yourself. — Mark 12:31" },
-    { text: "What's a specific practice you have to make your Scripture reading stick beyond just reading it?", verse: null },
-    { text: "Do you journal while reading the Bible — and how has that habit helped or not helped?", verse: null },
-    { text: "What passage have you returned to most in the last six months — and why does it keep finding you?", verse: null },
-    { text: "What does the Bible say about anxiety that you've found actually helpful in a moment of real fear?", verse: "Do not be anxious about anything, but in every situation, by prayer… present your requests to God. — Philippians 4:6" },
-    { text: "What's a promise in Scripture that you're still waiting to see fulfilled in your own life?", verse: "For no matter how many promises God has made, they are 'Yes' in Christ. — 2 Corinthians 1:20" },
-  ],
-  "Hot Takes": [
-    { text: "Is Sunday church attendance a spiritual discipline or a cultural habit — and does the difference matter?", verse: null },
-    { text: "Should Christians engage with secular culture or separate from it? Where's the line?", verse: "Be in the world but not of it. — John 17:14–16 (paraphrased)" },
-    { text: "Is silence a form of dishonesty when you see a fellow believer going astray?", verse: "Speak the truth in love. — Ephesians 4:15" },
-    { text: "Do you think the modern church talks about money the right amount, too much, or not enough?", verse: null },
-    { text: "Can you truly be a 'lone wolf' Christian — thriving in faith without community?", verse: "Let us not give up meeting together. — Hebrews 10:25" },
-    { text: "Is Christianity compatible with wealth — or does Jesus's teaching on money indict most of the Western church?", verse: "It is easier for a camel to go through the eye of a needle than for someone who is rich to enter the kingdom of God. — Matthew 19:24" },
-    { text: "Is the prosperity gospel a different gospel entirely, or just an overemphasis of something real?", verse: null },
-    { text: "Should Christians vote — and if so, how should faith influence who they vote for?", verse: null },
-    { text: "Is it hypocritical to tithe but not be generous in other areas of life?", verse: null },
-    { text: "Are most Christians more shaped by their culture than by Scripture — and are you?", verse: "Do not conform to the pattern of this world, but be transformed by the renewing of your mind. — Romans 12:2" },
-    { text: "Is therapy compatible with faith — or does relying on it indicate lack of trust in God?", verse: null },
-    { text: "Should pastors be held to a higher standard publicly — or does that create an unhealthy celebrity culture?", verse: null },
-    { text: "Is social media a spiritual battleground for your generation — and are you losing the battle?", verse: null },
-    { text: "Is it possible to deeply love Jesus but not love the church as an institution?", verse: null },
-    { text: "Should Christians smoke, drink, or use cannabis — and does the 'disputable matters' framework still apply?", verse: "Whether you eat or drink or whatever you do, do it all for the glory of God. — 1 Corinthians 10:31" },
-    { text: "Does the modern church prioritize comfort over conviction — and has that made it less effective?", verse: null },
-    { text: "Is it Christlike to be passive or silent in the face of injustice — even if speaking up feels 'divisive'?", verse: "Open your mouth for those who cannot speak. — Proverbs 31:8" },
-    { text: "Is Christian accountability culture healthy — or has it become legalism in disguise?", verse: null },
-    { text: "Do you think most people in church actually believe what they sing in worship — or is it performance?", verse: "These people honor me with their lips, but their hearts are far from me. — Matthew 15:8" },
-    { text: "Is it wrong for a church to be known primarily for its building, brand, or music?", verse: null },
-    { text: "Can a church that refuses to address social issues faithfully preach the full gospel?", verse: null },
-    { text: "Does God care what kind of music you listen to — or is that legalism?", verse: null },
-    { text: "Is tithing 10% a New Testament obligation or an Old Testament practice the church has overcorrected on?", verse: null },
-    { text: "Should Christian leaders be public about their mental health struggles — or does that undermine their authority?", verse: null },
-    { text: "Is it possible for a sermon to be entertaining but not actually biblical?", verse: null },
-    { text: "Do you think discipleship is dying in the modern church — and whose fault is it?", verse: "Go and make disciples of all nations. — Matthew 28:19" },
-    { text: "Is it spiritually irresponsible to attend a megachurch where no one knows your name?", verse: null },
-    { text: "Can a Christian be pro-war? And how does 'love your enemies' fit into foreign policy?", verse: "Blessed are the peacemakers, for they will be called children of God. — Matthew 5:9" },
-    { text: "Is Christian nationalism a heresy — or just a misunderstood patriotism?", verse: null },
-    { text: "Is celebrity pastor culture destroying the church — or is it just modern church growth?", verse: null },
-    { text: "Does the Bible's silence on something mean Christians have freedom in that area — or caution?", verse: null },
-    { text: "Should the church take institutional positions on political issues — or stay silent to protect unity?", verse: null },
-    { text: "Is it possible to be genuinely saved and never share your faith with anyone in your lifetime?", verse: null },
-    { text: "Is Christian minimalism a godly lifestyle — or an aesthetic trend with a Bible verse slapped on it?", verse: null },
-    { text: "Do you think Christians weaponize grace to avoid accountability — and have you ever done that?", verse: "Shall we go on sinning so that grace may increase? By no means! — Romans 6:1–2" },
-    { text: "Is casual Christianity — believing without commitment — still Christianity?", verse: null },
-    { text: "Are Christian dating apps a wise tool or a symptom of the church's failure to build real community?", verse: null },
-    { text: "Does the Western church prioritize individuals over community in a way that contradicts the New Testament model?", verse: null },
-    { text: "Is it sinful to be consistently late to church — or is that legalism?", verse: null },
-    { text: "Should Christian women pursue leadership in ministry — and does the complementarian view still hold up?", verse: null },
-    { text: "Is it possible to honor your parents and still set firm boundaries with them?", verse: "Honor your father and your mother. — Exodus 20:12" },
-    { text: "Does God ever change His mind — and what does that tell us about prayer?", verse: null },
-    { text: "Is it spiritually dangerous to pray only when things are bad — and what does that reveal about faith?", verse: null },
-    { text: "Is 'hate the sin, love the sinner' a biblical principle or a cop-out that avoids real relationships?", verse: null },
-    { text: "Do you think the Holy Spirit is overemphasized in some circles and underemphasized in others — and which is more dangerous?", verse: null },
-    { text: "Is fasting still a meaningful spiritual practice — or is it mainly kept alive as a tradition?", verse: null },
-    { text: "Should Christians be climate advocates — or is environmentalism outside the church's lane?", verse: "The Lord God took the man and put him in the Garden of Eden to work it and take care of it. — Genesis 2:15" },
-    { text: "Is it possible to be theologically reformed and relationally gracious — or does one compromise the other?", verse: null },
-    { text: "Should the church talk more openly about porn addiction — and why is it still largely avoided?", verse: null },
-    { text: "Is it unchristian to have career ambitions — or does ambition become sin only when it crowds out God?", verse: null },
-    { text: "Do you think most Christians treat the Sabbath like God intended — and does it matter?", verse: "Remember the Sabbath day by keeping it holy. — Exodus 20:8" },
-    { text: "Is it hypocritical for a Christian to support capital punishment?", verse: null },
-    { text: "Do you think God is more concerned with orthodoxy (right belief) or orthopraxy (right practice)?", verse: null },
-    { text: "Is it possible to genuinely repent and repeat the same sin — or does repetition reveal that repentance wasn't real?", verse: null },
-    { text: "Do you think the church should be more involved in local politics — or stay focused on the kingdom?", verse: null },
-    { text: "Is Christianity a religion of feeling or a religion of faith — and where do emotions fit in?", verse: null },
-    { text: "Is it possible to have theological disagreements with your church and remain in good standing — or should you leave?", verse: null },
-    { text: "Should a Christian ever say God told them something — and how do we hold that accountably?", verse: null },
-    { text: "Is the idea of a 'church family' just a nice metaphor — or is the New Testament serious about it?", verse: null },
-    { text: "Do you think cancel culture has infiltrated the church — and how should Christians respond when a leader falls?", verse: "Brothers and sisters, if someone is caught in a sin, you who live by the Spirit should restore that person gently. — Galatians 6:1" },
-    { text: "Should Christians ever boycott companies or products — and does that match the way Jesus engaged culture?", verse: null },
-    { text: "Is most Christian music too focused on feelings and not enough on theology?", verse: null },
-    { text: "Is it spiritually responsible to follow a pastor online who you don't actually know in person?", verse: null },
-    { text: "Do you think God heals miraculously today — and how do you handle it when he doesn't?", verse: null },
-    { text: "Is generational trauma a biblical concept — and how does faith interact with it?", verse: null },
-    { text: "Does God use non-Christians to teach Christians things — and can you give an example from your own life?", verse: null },
-    { text: "Is humility in a leader a sign of weakness — or the most powerful thing they can model?", verse: "Humble yourselves before the Lord, and he will lift you up. — James 4:10" },
-    { text: "Should Christians practice spiritual warfare literally — or is most of that language metaphorical?", verse: null },
-    { text: "Is it possible to have saving faith but never experience transformation in your character?", verse: "Faith without deeds is dead. — James 2:26" },
-    { text: "Do you think Christianity in Africa or the Global South is more spiritually vibrant than in the West — and why?", verse: null },
-    { text: "Should a church discipline a member for habitual unrepentant sin — and how would that work today?", verse: null },
-    { text: "Is it possible to be both deeply committed to justice and deeply committed to personal holiness — or do they pull apart?", verse: null },
-    { text: "Is anxiety always a faith problem — or can it be a medical issue that Christians have spiritualized unfairly?", verse: null },
-    { text: "Is it possible to be a sincere Christian and still hold views the church historically considered heretical?", verse: null },
-    { text: "Should Christians read books by non-Christian authors — and what's the risk?", verse: null },
-    { text: "Is there a difference between a 'personal relationship with God' and a community relationship with God — and does the church prioritize the wrong one?", verse: null },
-    { text: "Is forgiveness always the same as reconciliation — and has the church conflated the two?", verse: null },
-    { text: "Do you think the church takes spiritual gifts seriously enough — or has it become skeptical of them?", verse: "Do not quench the Spirit. — 1 Thessalonians 5:19" },
-    { text: "Is it spiritually irresponsible to give an evangelistic altar call without follow-up discipleship?", verse: null },
-    { text: "Does the West overcomplicate Christianity in ways that make it inaccessible — and does simplicity reveal more truth?", verse: null },
-    { text: "Is it possible to grow in faith without going through suffering — or is suffering the primary classroom of God?", verse: "We also glory in our sufferings, because we know that suffering produces perseverance. — Romans 5:3" },
-    { text: "Is silence in the face of racism a sin — or a complicated situation the church shouldn't oversimplify?", verse: null },
-    { text: "Are most people in church genuinely saved — or are there more nominal Christians than we acknowledge?", verse: null },
-    { text: "Is doubt compatible with strong faith — or does persistent doubt indicate something spiritually wrong?", verse: null },
-    { text: "Do you think Christianity will decline in your country in the next generation — and what would that mean?", verse: null },
-    { text: "Is the prosperity gospel more dangerous than atheism — because at least atheism doesn't misrepresent God?", verse: null },
-    { text: "Is it possible to be too 'woke' as a Christian — or is care for marginalized people always Christlike?", verse: null },
-    { text: "Do you think Christians use 'spiritual discernment' as cover for personal bias sometimes?", verse: null },
-    { text: "Is it spiritually mature to fast from social media — or is that avoiding engagement that Christians need to have?", verse: null },
-    { text: "Does God call some people to be wealthy — and if so, how do you know if that's you?", verse: null },
-    { text: "Is the baptism of the Holy Spirit a second experience after salvation — or part of salvation itself?", verse: null },
-    { text: "Can Christians lose their salvation — and how does your answer actually change how you live?", verse: null },
-    { text: "Is it possible to be truly forgiven by God but still feel shame — and what does Scripture say about that?", verse: "There is now no condemnation for those who are in Christ Jesus. — Romans 8:1" },
-    { text: "Do you think church membership matters — or is it an outdated institutional concept?", verse: null },
-    { text: "Is it sinful to disagree with your pastor — and when is it okay to say so publicly?", verse: null },
-    { text: "Is Jesus's command to sell your possessions meant literally — and if not, how far does it go?", verse: "Sell your possessions and give to the poor. — Luke 12:33" },
-  ],
-  "Ice Breakers": [
-    { text: "What's one thing most people in this room don't know about you?", verse: null },
-    { text: "If God called you to drop everything and move to a new city tomorrow, where would you hope it was?", verse: null },
-    { text: "What's the most unexpected way God has shown up for you in the past year?", verse: null },
-    { text: "What's your spiritual gift — and do you actually use it regularly?", verse: "Each of you should use whatever gift you have received to serve others. — 1 Peter 4:10" },
-    { text: "If you could have dinner with any person from the Bible besides Jesus, who and why?", verse: null },
-    { text: "What song is currently describing your life's season better than any sermon has?", verse: null },
-    { text: "What's the most embarrassing thing you've ever done in church?", verse: null },
-    { text: "What's a hobby or interest that people wouldn't expect from someone as spiritual as you?", verse: null },
-    { text: "If you had to describe your current prayer life using a weather report, what would it say?", verse: null },
-    { text: "What's something you used to believe about faith that you've completely changed your mind on?", verse: null },
-    { text: "What's a movie, show, or book that has made you think about God or faith in a new way?", verse: null },
-    { text: "What nickname has God given you — or what would you want it to be?", verse: null },
-    { text: "If your faith journey were a road trip, what are the key stops so far?", verse: null },
-    { text: "What's a random act of kindness someone showed you that stayed with you for years?", verse: null },
-    { text: "What's one fear you've told God about but not many other people?", verse: null },
-    { text: "What's a tradition or ritual in your family that feels sacred to you — even if it's not overtly religious?", verse: null },
-    { text: "If you had to preach a 5-minute sermon today with no preparation, what would you talk about?", verse: null },
-    { text: "What's something you're really good at that you think is actually a spiritual gift in disguise?", verse: null },
-    { text: "What's the most unusual place you've ever felt the presence of God?", verse: null },
-    { text: "If you were a character in a Bible story — not a famous one — who would you be?", verse: null },
-    { text: "What's a prayer you stopped praying that you probably need to start again?", verse: null },
-    { text: "If you could ask God one question right now — just one — what would it be?", verse: null },
-    { text: "What's a word someone spoke over you that has stuck in your spirit — for better or worse?", verse: null },
-    { text: "What's the best piece of advice a parent, grandparent, or mentor ever gave you?", verse: null },
-    { text: "What's something about your life right now that you're genuinely grateful for — not the usual answer?", verse: null },
-    { text: "If you could relive one day of your faith journey, which would it be?", verse: null },
-    { text: "What's something you've been putting off doing that you know God keeps nudging you about?", verse: null },
-    { text: "If you could instantly master one skill — any skill — what would it be and how would you use it for God?", verse: null },
-    { text: "What's a verse that has followed you around like a recurring dream?", verse: null },
-    { text: "What's the weirdest thing you've ever prayed for — and did God answer?", verse: null },
-    { text: "If your faith journey had a theme song for this chapter, what would it be?", verse: null },
-    { text: "What food do you think they'll definitely have in heaven — and why?", verse: null },
-    { text: "What's a small, everyday moment that has felt like a miracle to you recently?", verse: null },
-    { text: "If you had to describe your relationship with God in one emoji, which would it be?", verse: null },
-    { text: "What's one thing you want to accomplish spiritually in the next 12 months?", verse: null },
-    { text: "What's a city or country in the world you feel inexplicably drawn to — and have you asked God why?", verse: null },
-    { text: "If God sent you a voice note right now, what do you think it would say?", verse: null },
-    { text: "What's one thing about your upbringing that shaped how you see God most?", verse: null },
-    { text: "What spiritual discipline have you tried and failed at so many times it's almost funny?", verse: null },
-    { text: "What's a compliment you've received that you secretly needed to hear from a godly perspective?", verse: null },
-    { text: "What's a moment from nature that made you feel close to God in a way no church service ever has?", verse: null },
-    { text: "If God asked you right now, 'What do you want?' — what would you actually say?", verse: null },
-    { text: "What's one thing about heaven you're genuinely most excited about — not the Sunday school answer?", verse: null },
-    { text: "What's the most creative thing you've ever done for or with God?", verse: null },
-    { text: "What's a name or face that comes to mind when you think of someone who really showed you the love of Jesus?", verse: null },
-    { text: "What's a season of your life you've never fully processed spiritually — but probably should?", verse: null },
-    { text: "If you could go back and tell your 16-year-old self one thing about faith, what would it be?", verse: null },
-    { text: "What's something God has taught you through failure that success never could?", verse: null },
-    { text: "What's one spiritual gift you wish you had — and why?", verse: null },
-    { text: "What's your favorite thing about the person sitting to your left — and can you say it out loud?", verse: null },
-    { text: "What's a dream you've shelved that you think God might actually be holding on to for you?", verse: null },
-    { text: "What's the funniest thing that's ever happened to you at church or in a Christian community?", verse: null },
-    { text: "If your life were made into a biblical film, what genre would it be — and who would play you?", verse: null },
-    { text: "What's one thing you do alone that actually builds your faith more than anything else?", verse: null },
-    { text: "What does a perfect day look like for you — and does God have a place in it naturally?", verse: null },
-    { text: "What's a promise you made to God that you're still working on keeping?", verse: null },
-    { text: "What's one thing about your generation's faith that gives you hope?", verse: null },
-    { text: "What's one thing about your generation's faith that worries you?", verse: null },
-    { text: "What word would the people who know you best use to describe you — and would you agree with that?", verse: null },
-    { text: "If you could bring one fictional character to faith, who would you pick?", verse: null },
-    { text: "What's a habit you've built in this season of life that you think God is proud of?", verse: null },
-    { text: "What's the worst advice about faith you've ever received — and how did you figure out it was bad?", verse: null },
-    { text: "What's something you've been surprised to find that you love about being in community with believers?", verse: null },
-    { text: "What's a book outside the Bible that has made you a better Christian?", verse: null },
-    { text: "What's one way your faith looks different today than it did five years ago?", verse: null },
-    { text: "What's a prayer that God answered in a way that was way better than what you asked for?", verse: null },
-    { text: "What's an area of your life where you know God is asking for your whole heart — not just part of it?", verse: null },
-    { text: "What's the most meaningful gift you've ever received — spiritual or physical?", verse: null },
-    { text: "What's a question about life or faith that keeps you up at night?", verse: null },
-    { text: "What's one thing you'd love this group to know about you that never comes up in normal conversation?", verse: null },
-    { text: "What's the kindest thing a stranger has ever done for you — and did it feel like God was in it?", verse: null },
-    { text: "What's a sacrifice someone made for you that changed how you see love or sacrifice?", verse: null },
-    { text: "What's one prayer request you've never voiced in a group setting but have been carrying alone?", verse: null },
-    { text: "What's the most important thing you've learned about yourself in the past year?", verse: null },
-    { text: "What's a lie about yourself that you're still working to replace with what God says about you?", verse: null },
-    { text: "What's a word that describes the version of yourself you're becoming — and does it excite you?", verse: null },
-    { text: "If you could invite any historical Christian figure to your small group, who would you choose — and what would you ask them?", verse: null },
-    { text: "What has this community meant to your faith — and when did you feel it most?", verse: null },
-    { text: "What's a childhood memory that shaped how you understand grace, love, or belonging?", verse: null },
-    { text: "What's something you've stopped praying for — and should you start again?", verse: null },
-    { text: "What's one thing about your life right now that you think God is doing something with — even if you can't see the shape yet?", verse: null },
-    { text: "What's a season in your life where God felt most close — and what was different about it?", verse: null },
-    { text: "What's one conversation you know you need to have with someone — that you keep postponing?", verse: null },
-    { text: "What's the best thing about where you are in life right now?", verse: null },
-    { text: "What's a phrase or motto you live by — whether it's from the Bible or not?", verse: null },
-    { text: "What's something about God's character that you wish more people understood?", verse: null },
-    { text: "What would your life look like in 5 years if you fully surrendered to what God is asking of you today?", verse: null },
-    { text: "What's one way you've seen God use your weaknesses or failures for something good?", verse: null },
-    { text: "What's a small, seemingly insignificant decision you made that ended up being spiritually significant?", verse: null },
-    { text: "What's a part of your story that you used to be embarrassed by but now see as a gift?", verse: null },
-    { text: "What's a question about this group or this community you've wanted to ask but haven't?", verse: null },
-    { text: "What's a value you hold so deeply that you'd rather lose a friendship than compromise it?", verse: null },
-    { text: "If you could only describe your faith to a child in one sentence, what would you say?", verse: null },
-    { text: "What's one thing you're trusting God for this week — something specific, not generic?", verse: null },
-    { text: "What's a dream that scares you because it's bigger than what you can accomplish alone?", verse: null },
-    { text: "What's one moment in your life that you can say with confidence — God was in that?", verse: null },
-  ],
+    "Marriage":[
+      {text:"What's one thing your spouse does that still surprises you with love, even after all this time?",verse:null},
+      {text:"How do you practice forgiveness in your marriage when it's genuinely difficult?",verse:"Bear with each other and forgive one another… Forgive as the Lord forgave you. — Colossians 3:13"},
+      {text:"In what area of your marriage are you currently trusting God the most?",verse:null},
+      {text:"How do you intentionally keep Christ at the center of your marriage during busy seasons?",verse:"A cord of three strands is not quickly broken. — Ecclesiastes 4:12"},
+      {text:"What's one habit or ritual in your marriage that has brought you closer together?",verse:null}
+    ],
+    "Pre-Marriage":[
+      {text:"What's a non-negotiable value you need your future spouse to share with you?",verse:null},
+      {text:"How do you currently handle conflict with someone you're close to — and how do you want to grow in that?",verse:"Do not let the sun go down while you are still angry. — Ephesians 4:26"},
+      {text:"What does a Christ-centered marriage look like to you, practically speaking?",verse:null},
+      {text:"How are you actively preparing yourself spiritually to be a godly spouse?",verse:"He who finds a wife finds what is good and receives favor from the Lord. — Proverbs 18:22"},
+      {text:"What's one expectation you have about marriage that you've never actually said out loud?",verse:null}
+    ],
+    "The Word":[
+      {text:"Which Bible passage has shaped your life more than any other, and why?",verse:"Your word is a lamp to my feet and a light to my path. — Psalm 119:105"},
+      {text:"How has your understanding of a familiar Scripture changed as you've grown in faith?",verse:null},
+      {text:"When you read the Bible, what's your biggest struggle — and what helps you stay consistent?",verse:"All Scripture is God-breathed and useful for teaching, rebuking, correcting and training in righteousness. — 2 Timothy 3:16"},
+      {text:"What's a verse you've memorized that you return to in moments of pressure or fear?",verse:null},
+      {text:"If you could share one chapter of the Bible with someone who had never read it, which would you choose and why?",verse:null}
+    ],
+    "Hot Takes":[
+      {text:"Is Sunday church attendance a spiritual discipline or a cultural habit — and does the difference matter?",verse:null},
+      {text:"Should Christians engage with secular culture or separate from it? Where's the line?",verse:"Be in the world but not of it. — John 17:14–16 (paraphrased)"},
+      {text:"Is silence a form of dishonesty when you see a fellow believer going astray?",verse:"Speak the truth in love. — Ephesians 4:15"},
+      {text:"Do you think the modern church talks about money the right amount, too much, or not enough?",verse:null},
+      {text:"Can you truly be a 'lone wolf' Christian — thriving in faith without community?",verse:"Let us not give up meeting together. — Hebrews 10:25"}
+    ],
+    "Ice Breakers":[
+      {text:"What's one thing most people in this room don't know about you?",verse:null},
+      {text:"If God called you to drop everything and move to a new city tomorrow, where would you hope it was?",verse:null},
+      {text:"What's the most unexpected way God has shown up for you in the past year?",verse:null},
+      {text:"What's your spiritual gift — and do you actually use it regularly?",verse:"Each of you should use whatever gift you have received to serve others. — 1 Peter 4:10"},
+      {text:"If you could have dinner with any person from the Bible besides Jesus, who and why?",verse:null}
+    ]
   };
 
-  const ABBR = { "Marriage": "M", "Pre-Marriage": "PM", "The Word": "TW", "Hot Takes": "HT", "Ice Breakers": "IB" };
-  const CATS = Object.keys(QUESTIONS);
+  const ABBR={"Marriage":"M","Pre-Marriage":"PM","The Word":"TW","Hot Takes":"HT","Ice Breakers":"IB"};
+  const CATS=Object.keys(QUESTIONS);
 
-  let currentCat = "Ice Breakers";
-  let currentIdx = 0;
-  let isOpen = false;
-  let transitioning = false;
+  let players=[], currentPlayer=null, currentCat="Ice Breakers", currentIdx=0;
+  let isOpen=false, transitioning=false, selectedCount=0;
 
-  function abbr(c) { return ABBR[c] || c.split(' ').map(w => w[0]).join(''); }
+  function abbr(c){return ABBR[c]||c.split(' ').map(w=>w[0]).join('');}
 
-  function buildMenu() {
-    const menu = document.getElementById('dropdownMenu');
-    menu.innerHTML = '';
-    CATS.forEach(cat => {
-      const btn = document.createElement('button');
-      btn.className = 'dropdown-item' + (cat === currentCat ? ' active' : '');
-      btn.textContent = cat;
-      btn.addEventListener('click', () => selectCategory(cat));
+  /* ── SETUP ── */
+  function buildCountRow(){
+    const row=document.getElementById('countRow');
+    row.innerHTML='';
+    for(let i=2;i<=10;i++){
+      const btn=document.createElement('button');
+      btn.className='count-btn';
+      btn.textContent=i;
+      btn.onclick=()=>selectCount(i);
+      row.appendChild(btn);
+    }
+  }
+
+  function selectCount(n){
+    selectedCount=n;
+    document.querySelectorAll('.count-btn').forEach(b=>{
+      b.classList.toggle('selected',parseInt(b.textContent)===n);
+    });
+    buildNameInputs(n);
+    checkStartReady();
+  }
+
+  function buildNameInputs(n){
+    const container=document.getElementById('nameInputs');
+    container.innerHTML='';
+    for(let i=1;i<=n;i++){
+      const row=document.createElement('div');
+      row.className='name-row';
+      row.innerHTML=`<span class="name-number">${i}.</span><input class="name-input" type="text" placeholder="Player ${i}'s name" maxlength="24" oninput="checkStartReady()" />`;
+      container.appendChild(row);
+    }
+  }
+
+  function checkStartReady(){
+    const inputs=document.querySelectorAll('.name-input');
+    const ok=inputs.length>0&&[...inputs].every(i=>i.value.trim().length>0);
+    document.getElementById('btnStart').disabled=!ok;
+  }
+
+  function startGame(){
+    const inputs=document.querySelectorAll('.name-input');
+    players=[...inputs].map(i=>i.value.trim());
+    currentCat="Ice Breakers"; currentIdx=0; currentPlayer=null;
+    pickRandomPlayer();
+    showScreen('screenGame');
+    buildPlayerPills();
+    renderCard();
+  }
+
+  function resetGame(){ showScreen('screenSetup'); }
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  /* ── PLAYERS ── */
+  function pickRandomPlayer(){
+    let pool=players.filter(p=>p!==currentPlayer);
+    if(!pool.length) pool=players;
+    currentPlayer=pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  function buildPlayerPills(){
+    const c=document.getElementById('playerPills');
+    c.innerHTML='';
+    players.forEach(name=>{
+      const pill=document.createElement('div');
+      pill.className='player-pill'+(name===currentPlayer?' current':'');
+      pill.textContent=name;
+      pill.dataset.name=name;
+      c.appendChild(pill);
+    });
+  }
+
+  function updatePlayerPills(){
+    document.querySelectorAll('.player-pill').forEach(p=>{
+      p.classList.toggle('current', p.dataset.name===currentPlayer);
+    });
+  }
+
+  /* ── GAME ── */
+  function nextQuestion(){
+    if(transitioning) return;
+    fadeOut(()=>{
+      const pool=QUESTIONS[currentCat].map((_,i)=>i).filter(i=>i!==currentIdx);
+      currentIdx=pool[Math.floor(Math.random()*pool.length)]??0;
+      pickRandomPlayer();
+      updatePlayerPills();
+      renderCard();
+    });
+  }
+
+  function fadeOut(callback){
+    transitioning=true;
+    const stage=document.getElementById('stage');
+    stage.classList.add('fade-out');
+    setTimeout(()=>{ callback(); stage.classList.remove('fade-out'); transitioning=false; },300);
+  }
+
+  function renderCard(){
+    const q=QUESTIONS[currentCat][currentIdx];
+    document.getElementById('cardBadge').textContent=abbr(currentCat)+' · '+String(currentIdx+1).padStart(2,'0');
+    document.getElementById('questionText').textContent=q.text;
+    const vb=document.getElementById('verseBlock');
+    if(q.verse){ document.getElementById('verseText').textContent=q.verse; vb.style.display='block'; }
+    else { vb.style.display='none'; }
+    const initials=currentPlayer.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('playerAvatar').textContent=initials;
+    document.getElementById('playerNameDisplay').textContent=currentPlayer;
+  }
+
+  /* ── DROPDOWN ── */
+  function buildMenu(){
+    const menu=document.getElementById('dropdownMenu');
+    menu.innerHTML='';
+    CATS.forEach(cat=>{
+      const btn=document.createElement('button');
+      btn.className='dropdown-item'+(cat===currentCat?' active':'');
+      btn.textContent=cat;
+      btn.addEventListener('click',()=>selectCategory(cat));
       menu.appendChild(btn);
     });
   }
 
-  function toggleDropdown() {
-    isOpen = !isOpen;
-    const menu = document.getElementById('dropdownMenu');
-    const arrow = document.getElementById('dropdownArrow');
-    const dbtn = document.getElementById('dropdownBtn');
-    menu.classList.toggle('open', isOpen);
-    arrow.classList.toggle('open', isOpen);
-    dbtn.classList.toggle('open', isOpen);
-    if (isOpen) buildMenu();
+  function toggleDropdown(){
+    isOpen=!isOpen;
+    document.getElementById('dropdownMenu').classList.toggle('open',isOpen);
+    document.getElementById('dropdownArrow').classList.toggle('open',isOpen);
+    document.getElementById('dropdownBtn').classList.toggle('open',isOpen);
+    if(isOpen) buildMenu();
   }
 
-  function selectCategory(cat) {
-    isOpen = false;
+  function selectCategory(cat){
+    isOpen=false;
     document.getElementById('dropdownMenu').classList.remove('open');
     document.getElementById('dropdownArrow').classList.remove('open');
     document.getElementById('dropdownBtn').classList.remove('open');
-    if (cat === currentCat) return;
-    fadeOut(() => {
-      currentCat = cat;
-      currentIdx = 0;
-      document.getElementById('catLabel').textContent = cat;
-      renderCard();
-    });
+    if(cat===currentCat) return;
+    fadeOut(()=>{ currentCat=cat; currentIdx=0; document.getElementById('catLabel').textContent=cat; renderCard(); });
   }
 
-  function nextQuestion() {
-    if (transitioning) return;
-    fadeOut(() => {
-      const pool = QUESTIONS[currentCat].map((_, i) => i).filter(i => i !== currentIdx);
-      currentIdx = pool[Math.floor(Math.random() * pool.length)] ?? 0;
-      renderCard();
-    });
-  }
-
-  function fadeOut(callback) {
-    transitioning = true;
-    const stage = document.getElementById('stage');
-    stage.classList.add('fade-out');
-    setTimeout(() => {
-      callback();
-      stage.classList.remove('fade-out');
-      transitioning = false;
-    }, 300);
-  }
-
-  function renderCard() {
-    const q = QUESTIONS[currentCat][currentIdx];
-    document.getElementById('cardBadge').textContent = abbr(currentCat) + ' · ' + String(currentIdx + 1).padStart(2, '0');
-    document.getElementById('questionText').textContent = q.text;
-    const vb = document.getElementById('verseBlock');
-    if (q.verse) {
-      document.getElementById('verseText').textContent = q.verse;
-      vb.style.display = 'block';
-    } else {
-      vb.style.display = 'none';
-    }
-  }
-
-  // Close dropdown on outside click
-  document.addEventListener('mousedown', e => {
-    if (isOpen && !document.getElementById('dropdownWrap').contains(e.target)) {
-      toggleDropdown();
-    }
+  document.addEventListener('mousedown',e=>{
+    if(isOpen&&!document.getElementById('dropdownWrap').contains(e.target)) toggleDropdown();
   });
 
-  // Init
-  renderCard();
+  buildCountRow();
 </script>
 </body>
 </html>
