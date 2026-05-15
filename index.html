@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fellowship & Focus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c49950;
+      --gold-light: #d4b06a;
+      --bg: #0f0e0c;
+      --card-bg: #1c1a15;
+      --card-bg2: #161410;
+      --border: #2e2b22;
+      --border2: #3a3528;
+      --text-primary: #f4ede0;
+      --text-muted: #7a7060;
+      --text-dim: #9a8f7a;
+      --text-footer: #4a4538;
+      --verse-bg: #1a1810;
+      --green: #7ecf8e;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      font-family: 'EB Garamond', 'Georgia', serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 64px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Atmospheric glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -15vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70vw;
+      height: 45vh;
+      background: radial-gradient(ellipse, rgba(196,153,80,0.13) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 520px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    .eyebrow-text {
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .cross {
+      display: inline-flex;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(34px, 9vw, 52px);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+    }
+
+    .divider-line.l { background: linear-gradient(to right, transparent, var(--border2)); }
+    .divider-line.r { background: linear-gradient(to left, transparent, var(--border2)); }
+
+    .divider-diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ── DROPDOWN ── */
+    .dropdown-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      padding: 13px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+      font-family: 'EB Garamond', serif;
+    }
+
+    .dropdown-btn:hover { border-color: var(--gold); }
+    .dropdown-btn.open  { border-color: var(--gold); }
+
+    .dropdown-btn-label {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .dropdown-arrow {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: inline-block;
+      transition: transform 0.25s;
+    }
+
+    .dropdown-arrow.open { transform: rotate(180deg); }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0; right: 0;
+      background: var(--verse-bg);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      overflow: hidden;
+      z-index: 20;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.65);
+    }
+
+    .dropdown-menu.open { display: block; }
+
+    .dropdown-item {
+      width: 100%;
+      padding: 12px 18px;
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(58,53,40,0.5);
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'EB Garamond', serif;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: rgba(196,153,80,0.06); color: var(--gold-light); }
+    .dropdown-item.active { background: rgba(196,153,80,0.1); color: var(--gold); }
+
+    /* ── CARD ── */
+    .stage {
+      position: relative;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .stage.fade-out {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: -11px;
+      right: 18px;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-family: 'EB Garamond', serif;
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    .card {
+      background: linear-gradient(145deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 34px 26px 26px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Corner accent triangle */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 38px solid rgba(196,153,80,0.22);
+      border-bottom: 38px solid transparent;
+    }
+
+    .question-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(17px, 4vw, 22px);
+      color: var(--text-primary);
+      line-height: 1.68;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── VERSE ── */
+    .verse-block {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .verse-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      color: var(--gold);
+    }
+
+    .verse-label-text {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .verse-text {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.65;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── ACTIONS ── */
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .btn-next {
+      flex: 1;
+      padding: 14px 20px;
+      background: var(--gold);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--bg);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-family: 'EB Garamond', serif;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-next:hover  { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-next:active { transform: translateY(1px); }
+
+    .btn-share {
+      padding: 14px 15px;
+      border-radius: 4px;
+      background: rgba(196,153,80,0.07);
+      border: 1px solid var(--border2);
+      cursor: pointer;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-family: 'EB Garamond', serif;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-share:hover { border-color: var(--gold); }
+    .btn-share.copied { color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 44px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-cross-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-footer);
+    }
+
+    .footer-line {
+      width: 30px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .footer-text {
+      font-size: 10px;
+      color: var(--text-footer);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 400px) {
+      body { padding: 36px 14px 52px; }
+      .card { padding: 28px 18px 20px; }
+      .actions { flex-direction: column; }
+      .btn-share { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="eyebrow">
+      <span class="cross">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/>
+          <rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="eyebrow-text">Fellowship &amp; Focus</span>
+      <span class="cross">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="5.5" y="0" width="3" height="14" rx="1.5" fill="currentColor"/>
+          <rect x="0" y="5.5" width="14" height="3" rx="1.5" fill="currentColor"/>
+        </svg>
+      </span>
+    </div>
+    <h1>Start the<br><em>Conversation</em></h1>
+    <p class="subtitle">Prompts for deeper connection &amp; honest dialogue</p>
+    <div class="divider">
+      <div class="divider-line l"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line r"></div>
+    </div>
+  </header>
+
+  <!-- DROPDOWN -->
+  <div class="dropdown-wrap" id="dropdownWrap">
+    <button class="dropdown-btn" id="dropdownBtn" onclick="toggleDropdown()">
+      <span class="dropdown-btn-label" id="catLabel">Ice Breakers</span>
+      <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+    </button>
+    <div class="dropdown-menu" id="dropdownMenu"></div>
+  </div>
+
+  <!-- CARD STAGE -->
+  <div class="stage" id="stage">
+    <div class="card-badge" id="cardBadge">IB · 01</div>
+    <div class="card">
+      <p class="question-text" id="questionText">Loading...</p>
+
+      <div class="verse-block" id="verseBlock" style="display:none">
+        <div class="verse-label">
+          <span class="cross" style="color: var(--gold);">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+              <rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/>
+              <rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="verse-label-text">Scripture</span>
+        </div>
+        <p class="verse-text" id="verseText"></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn-next" onclick="nextQuestion()">Next Question</button>
+        <button class="btn-share" id="shareBtn" onclick="shareQuestion()">
+          <svg id="shareIcon" width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M11 1L15 5L11 9V7C7 7 4 8.5 3 12C3 8 5 4 11 4V1Z" fill="currentColor"/>
+            <path d="M2 9V14H12V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span id="shareLabel">Share</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-cross-row">
+      <div class="footer-line"></div>
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+        <rect x="4" y="0" width="3" height="11" rx="1.5" fill="currentColor"/>
+        <rect x="0" y="4" width="11" height="3" rx="1.5" fill="currentColor"/>
+      </svg>
+      <div class="footer-line"></div>
+    </div>
+    <p class="footer-text">Fellowship &amp; Focus &nbsp;·&nbsp; 2025</p>
+  </footer>
+
+</div><!-- /.wrap -->
+
+<script>
+  const QUESTIONS = {
+    "Marriage": [
+      { text: "What's one thing your spouse does that still surprises you with love, even after all this time?", verse: null },
+      { text: "How do you practice forgiveness in your marriage when it's genuinely difficult?", verse: "Bear with each other and forgive one another… Forgive as the Lord forgave you. — Colossians 3:13" },
+      { text: "In what area of your marriage are you currently trusting God the most?", verse: null },
+      { text: "How do you intentionally keep Christ at the center of your marriage during busy seasons?", verse: "A cord of three strands is not quickly broken. — Ecclesiastes 4:12" },
+      { text: "What's one habit or ritual in your marriage that has brought you closer together?", verse: null }
+    ],
+    "Pre-Marriage": [
+      { text: "What's a non-negotiable value you need your future spouse to share with you?", verse: null },
+      { text: "How do you currently handle conflict with someone you're close to — and how do you want to grow in that?", verse: "Do not let the sun go down while you are still angry. — Ephesians 4:26" },
+      { text: "What does a Christ-centered marriage look like to you, practically speaking?", verse: null },
+      { text: "How are you actively preparing yourself spiritually to be a godly spouse?", verse: "He who finds a wife finds what is good and receives favor from the Lord. — Proverbs 18:22" },
+      { text: "What's one expectation you have about marriage that you've never actually said out loud?", verse: null }
+    ],
+    "The Word": [
+      { text: "Which Bible passage has shaped your life more than any other, and why?", verse: "Your word is a lamp to my feet and a light to my path. — Psalm 119:105" },
+      { text: "How has your understanding of a familiar Scripture changed as you've grown in faith?", verse: null },
+      { text: "When you read the Bible, what's your biggest struggle — and what helps you stay consistent?", verse: "All Scripture is God-breathed and useful for teaching, rebuking, correcting and training in righteousness. — 2 Timothy 3:16" },
+      { text: "What's a verse you've memorized that you return to in moments of pressure or fear?", verse: null },
+      { text: "If you could share one chapter of the Bible with someone who had never read it, which would you choose and why?", verse: null }
+    ],
+    "Hot Takes": [
+      { text: "Is Sunday church attendance a spiritual discipline or a cultural habit — and does the difference matter?", verse: null },
+      { text: "Should Christians engage with secular culture or separate from it? Where's the line?", verse: "Be in the world but not of it. — John 17:14–16 (paraphrased)" },
+      { text: "Is silence a form of dishonesty when you see a fellow believer going astray?", verse: "Speak the truth in love. — Ephesians 4:15" },
+      { text: "Do you think the modern church talks about money the right amount, too much, or not enough?", verse: null },
+      { text: "Can you truly be a 'lone wolf' Christian — thriving in faith without community?", verse: "Let us not give up meeting together. — Hebrews 10:25" }
+    ],
+    "Ice Breakers": [
+      { text: "What's one thing most people in this room don't know about you?", verse: null },
+      { text: "If God called you to drop everything and move to a new city tomorrow, where would you hope it was?", verse: null },
+      { text: "What's the most unexpected way God has shown up for you in the past year?", verse: null },
+      { text: "What's your spiritual gift — and do you actually use it regularly?", verse: "Each of you should use whatever gift you have received to serve others. — 1 Peter 4:10" },
+      { text: "If you could have dinner with any person from the Bible besides Jesus, who and why?", verse: null }
+    ]
+  };
+
+  const ABBR = { "Marriage": "M", "Pre-Marriage": "PM", "The Word": "TW", "Hot Takes": "HT", "Ice Breakers": "IB" };
+  const CATS = Object.keys(QUESTIONS);
+
+  let currentCat = "Ice Breakers";
+  let currentIdx = 0;
+  let isOpen = false;
+  let transitioning = false;
+
+  function abbr(c) { return ABBR[c] || c.split(' ').map(w => w[0]).join(''); }
+
+  function buildMenu() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.innerHTML = '';
+    CATS.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'dropdown-item' + (cat === currentCat ? ' active' : '');
+      btn.textContent = cat;
+      btn.addEventListener('click', () => selectCategory(cat));
+      menu.appendChild(btn);
+    });
+  }
+
+  function toggleDropdown() {
+    isOpen = !isOpen;
+    const menu = document.getElementById('dropdownMenu');
+    const arrow = document.getElementById('dropdownArrow');
+    const dbtn = document.getElementById('dropdownBtn');
+    menu.classList.toggle('open', isOpen);
+    arrow.classList.toggle('open', isOpen);
+    dbtn.classList.toggle('open', isOpen);
+    if (isOpen) buildMenu();
+  }
+
+  function selectCategory(cat) {
+    isOpen = false;
+    document.getElementById('dropdownMenu').classList.remove('open');
+    document.getElementById('dropdownArrow').classList.remove('open');
+    document.getElementById('dropdownBtn').classList.remove('open');
+    if (cat === currentCat) return;
+    fadeOut(() => {
+      currentCat = cat;
+      currentIdx = 0;
+      document.getElementById('catLabel').textContent = cat;
+      renderCard();
+    });
+  }
+
+  function nextQuestion() {
+    if (transitioning) return;
+    fadeOut(() => {
+      const pool = QUESTIONS[currentCat].map((_, i) => i).filter(i => i !== currentIdx);
+      currentIdx = pool[Math.floor(Math.random() * pool.length)] ?? 0;
+      renderCard();
+    });
+  }
+
+  function fadeOut(callback) {
+    transitioning = true;
+    const stage = document.getElementById('stage');
+    stage.classList.add('fade-out');
+    setTimeout(() => {
+      callback();
+      stage.classList.remove('fade-out');
+      transitioning = false;
+    }, 300);
+  }
+
+  function renderCard() {
+    const q = QUESTIONS[currentCat][currentIdx];
+    document.getElementById('cardBadge').textContent = abbr(currentCat) + ' · ' + String(currentIdx + 1).padStart(2, '0');
+    document.getElementById('questionText').textContent = q.text;
+    const vb = document.getElementById('verseBlock');
+    if (q.verse) {
+      document.getElementById('verseText').textContent = q.verse;
+      vb.style.display = 'block';
+    } else {
+      vb.style.display = 'none';
+    }
+  }
+
+  function shareQuestion() {
+    const q = QUESTIONS[currentCat][currentIdx];
+    const text = q.verse ? `"${q.text}"\n\n${q.verse}` : `"${q.text}"`;
+    const shareBtn = document.getElementById('shareBtn');
+    const shareLabel = document.getElementById('shareLabel');
+    const shareIcon = document.getElementById('shareIcon');
+
+    const showCopied = () => {
+      shareBtn.classList.add('copied');
+      shareLabel.textContent = 'Copied!';
+      shareIcon.innerHTML = '<path d="M3 8L6.5 11.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+      setTimeout(() => {
+        shareBtn.classList.remove('copied');
+        shareLabel.textContent = 'Share';
+        shareIcon.innerHTML = '<path d="M11 1L15 5L11 9V7C7 7 4 8.5 3 12C3 8 5 4 11 4V1Z" fill="currentColor"/><path d="M2 9V14H12V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>';
+      }, 2000);
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(showCopied);
+    } else {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showCopied();
+    }
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener('mousedown', e => {
+    if (isOpen && !document.getElementById('dropdownWrap').contains(e.target)) {
+      toggleDropdown();
+    }
+  });
+
+  // Init
+  renderCard();
+</script>
+</body>
+</html>
